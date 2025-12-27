@@ -1,8 +1,8 @@
 package com.hoangthanhhong.badminton.repository;
 
-import com.badminton.entity.Order;
-import com.badminton.enums.OrderStatus;
-import com.badminton.enums.PaymentStatus;
+import com.hoangthanhhong.badminton.entity.Order;
+import com.hoangthanhhong.badminton.enums.OrderStatus;
+import com.hoangthanhhong.badminton.enums.PaymentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
