@@ -8,9 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Auditable {
-    String action()
-
-    default "";
+    String action() default "";
 
     String description() default "";
 }

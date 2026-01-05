@@ -178,7 +178,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         // Send notification to user
         notificationService.sendNotification(
                 attendance.getUser().getId(),
-                com.badminton.enums.NotificationType.SYSTEM_ANNOUNCEMENT,
+                com.hoangthanhhong.badminton.enums.NotificationType.SYSTEM_ANNOUNCEMENT,
                 "Leave Approved",
                 String.format("Your leave request for %s has been approved", attendance.getDate()),
                 java.util.Map.of("attendanceId", attendanceId));
@@ -210,7 +210,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         // Send notification to user
         notificationService.sendNotification(
                 attendance.getUser().getId(),
-                com.badminton.enums.NotificationType.SYSTEM_ANNOUNCEMENT,
+                com.hoangthanhhong.badminton.enums.NotificationType.SYSTEM_ANNOUNCEMENT,
                 "Leave Rejected",
                 String.format("Your leave request for %s has been rejected: %s", attendance.getDate(), reason),
                 java.util.Map.of("attendanceId", attendanceId));

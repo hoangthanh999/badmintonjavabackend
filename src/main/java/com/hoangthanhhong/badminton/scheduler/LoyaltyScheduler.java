@@ -1,6 +1,6 @@
 package com.hoangthanhhong.badminton.scheduler;
 
-import com.hoangthanhhong.badminton.entity.LoyaltyPoint;
+import com.hoangthanhhong.badminton.dto.loyalty.LoyaltyPointDTO; // ✅ Thêm import này
 import com.hoangthanhhong.badminton.entity.User;
 import com.hoangthanhhong.badminton.repository.LoyaltyPointRepository;
 import com.hoangthanhhong.badminton.repository.UserRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -50,11 +49,12 @@ public class LoyaltyScheduler {
 
         int sent = 0;
         for (User user : users) {
-            List<LoyaltyPoint> expiringPoints = loyaltyService.getExpiringPoints(user.getId(), 30);
+            // ✅ ĐỔI THÀNH LoyaltyPointDTO
+            List<LoyaltyPointDTO> expiringPoints = loyaltyService.getExpiringPoints(user.getId(), 30);
 
             if (!expiringPoints.isEmpty()) {
                 int totalExpiring = expiringPoints.stream()
-                        .mapToInt(LoyaltyPoint::getPoints)
+                        .mapToInt(LoyaltyPointDTO::getPoints) // ✅ Đổi thành LoyaltyPointDTO::getPoints
                         .sum();
 
                 notificationService.sendNotification(
@@ -83,7 +83,7 @@ public class LoyaltyScheduler {
 
         // Find users with birthday today
         List<User> users = userRepository.findAll().stream()
-                .filter(user -> user.getDateOfBirth() != null)
+                .filter(user -> user.getDateOfBirth() != null) // ✅ Đã có method này
                 .filter(user -> {
                     LocalDate dob = user.getDateOfBirth();
                     return dob.getMonth() == today.getMonth() && dob.getDayOfMonth() == today.getDayOfMonth();

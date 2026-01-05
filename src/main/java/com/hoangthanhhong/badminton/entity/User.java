@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate; // ✅ Import này
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -41,6 +42,10 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(length = 500)
     private String avatar;
+
+    // ✅ THÊM FIELD NÀY
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)

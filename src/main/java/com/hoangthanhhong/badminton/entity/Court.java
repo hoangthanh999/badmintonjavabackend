@@ -116,6 +116,11 @@ public class Court extends BaseEntity {
         }
     }
 
+    @Transient
+    public String getCourtName() {
+        return name;
+    }
+
     public boolean isAvailable() {
         return status == CourtStatus.AVAILABLE;
     }

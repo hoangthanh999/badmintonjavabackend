@@ -18,7 +18,7 @@ public class AuditAspect {
 
     private final AuditService auditService;
 
-    @Pointcut("@annotation(com.badminton.annotation.Auditable)")
+    @Pointcut("@annotation(com.hoangthanhhong.badminton.annotation.Auditable)")
     public void auditableMethod() {
     }
 

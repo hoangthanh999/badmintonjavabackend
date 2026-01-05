@@ -22,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,10 @@ public class AuditServiceImpl implements AuditService {
                     .userId(userId)
                     .username(user != null ? user.getUsername() : null)
                     .userEmail(user != null ? user.getEmail() : null)
-                    .userRole(user != null && user.getRole() != null ? user.getRole().getName() : null)
+                    // ✅ SỬA: Convert RoleType enum sang String
+                    .userRole(user != null && user.getRole() != null
+                            ? user.getRole().getRoleName().name()
+                            : null)
                     .action(action)
                     .actionCategory(actionCategory)
                     .description(description)
@@ -127,6 +131,7 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public void logCreate(String entityType, Long entityId, Object entity, Long userId) {
         try {
+            @SuppressWarnings("unchecked")
             Map<String, Object> entityMap = objectMapper.convertValue(entity, Map.class);
 
             log(
@@ -146,7 +151,9 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public void logUpdate(String entityType, Long entityId, Object oldEntity, Object newEntity, Long userId) {
         try {
+            @SuppressWarnings("unchecked")
             Map<String, Object> oldMap = objectMapper.convertValue(oldEntity, Map.class);
+            @SuppressWarnings("unchecked")
             Map<String, Object> newMap = objectMapper.convertValue(newEntity, Map.class);
 
             log(
@@ -166,6 +173,7 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public void logDelete(String entityType, Long entityId, Object entity, Long userId) {
         try {
+            @SuppressWarnings("unchecked")
             Map<String, Object> entityMap = objectMapper.convertValue(entity, Map.class);
 
             log(
