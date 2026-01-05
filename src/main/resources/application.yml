@@ -1,0 +1,52 @@
+# src/main/resources/application.yml
+spring:
+  application:
+    name: badminton-booking-system
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/badminton_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: your_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+  
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your-email@gmail.com
+    password: your-app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+jwt:
+  secret: YourVeryLongSecretKeyForJWTTokenGenerationAtLeast256BitsLong
+  expiration: 86400000 # 24 hours
+
+cloudinary:
+  cloud-name: your-cloud-name
+  api-key: your-api-key
+  api-secret: your-api-secret
+
+# Logging
+logging:
+  level:
+    com.badminton: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO
