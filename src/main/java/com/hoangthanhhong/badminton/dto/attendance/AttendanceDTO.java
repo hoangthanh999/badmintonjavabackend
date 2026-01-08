@@ -1,4 +1,4 @@
-package com.hoangthanhhong.badminton.dto;
+package com.hoangthanhhong.badminton.dto.attendance;
 
 import com.hoangthanhhong.badminton.enums.AttendanceStatus;
 import lombok.AllArgsConstructor;

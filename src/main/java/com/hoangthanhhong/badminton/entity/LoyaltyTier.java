@@ -69,7 +69,9 @@ public class LoyaltyTier extends BaseEntity {
     private String benefits; // JSON array of benefits
 
     // === RELATIONSHIPS ===
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "loyalty_tier_id")
+    private LoyaltyTier loyaltyTier;
     @OneToMany(mappedBy = "loyaltyTier")
     @Builder.Default
     private List<User> users = new ArrayList<>();

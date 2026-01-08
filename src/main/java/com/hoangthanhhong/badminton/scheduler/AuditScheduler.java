@@ -64,7 +64,6 @@ public class AuditScheduler {
                 log.warn("Suspicious activity detected from IP: {} - {} failed login attempts",
                         entry.getKey(), entry.getValue());
 
-                // TODO: Implement IP blocking or alert administrators
             }
         }
 

@@ -53,7 +53,8 @@ public class Order extends BaseEntity {
 
     @Column(name = "final_amount", nullable = false)
     private Double finalAmount;
-
+    @Column(name = "subtotal")
+    private Double subtotal;
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status", nullable = false, length = 20)
     @Builder.Default
@@ -106,7 +107,8 @@ public class Order extends BaseEntity {
 
     @Column(name = "customer_notes", columnDefinition = "TEXT")
     private String customerNotes;
-
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
     @Column(name = "admin_notes", columnDefinition = "TEXT")
     private String adminNotes;
 
@@ -146,7 +148,9 @@ public class Order extends BaseEntity {
     private String companyAddress;
 
     // === RELATIONSHIPS ===
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method", length = 50)
+    private com.hoangthanhhong.badminton.enums.PaymentMethod paymentMethod;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<OrderDetail> orderDetails = new ArrayList<>();
@@ -295,5 +299,29 @@ public class Order extends BaseEntity {
             this.invoiceNumber = "INV" + System.currentTimeMillis();
             this.invoiceDate = LocalDateTime.now();
         }
+    }
+
+    public Double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(Double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public com.hoangthanhhong.badminton.enums.PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(com.hoangthanhhong.badminton.enums.PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

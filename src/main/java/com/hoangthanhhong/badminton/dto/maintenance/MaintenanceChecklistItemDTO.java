@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class MaintenanceChecklistItemDTO {
-
     private Long id;
     private String task;
     private String description;

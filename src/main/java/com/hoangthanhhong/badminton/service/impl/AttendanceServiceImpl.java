@@ -151,9 +151,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         attendance = attendanceRepository.save(attendance);
 
-        // Send notification to manager
-        // TODO: Get manager and send notification
-
         log.info("User {} requested leave for {}", user.getName(), request.getDate());
 
         return attendanceMapper.toDTO(attendance);

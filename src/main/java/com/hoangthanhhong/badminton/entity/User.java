@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate; // ✅ Import này
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -43,7 +43,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(length = 500)
     private String avatar;
 
-    // ✅ THÊM FIELD NÀY
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
@@ -62,6 +61,10 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "phone_verified")
     @Builder.Default
     private Boolean phoneVerified = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "loyalty_tier_id")
+    private LoyaltyTier loyaltyTier;
 
     // === RELATIONSHIPS ===
 
@@ -100,6 +103,20 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Attendance> attendances = new ArrayList<>();
+
+    // *** THÊM MỚI: Referrals ***
+    @OneToMany(mappedBy = "referrer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<UserReferral> referralsSent = new ArrayList<>(); // Những người mình giới thiệu
+
+    @OneToMany(mappedBy = "referred", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<UserReferral> referralsReceived = new ArrayList<>(); // Được người khác giới thiệu
+
+    // *** THÊM MỚI: Addresses ***
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<UserAddress> addresses = new ArrayList<>();
 
     // === USERDETAILS IMPLEMENTATION ===
 
@@ -146,9 +163,56 @@ public class User extends BaseEntity implements UserDetails {
         booking.setUser(null);
     }
 
+    // *** Address Helper Methods ***
+    public void addAddress(UserAddress address) {
+        addresses.add(address);
+        address.setUser(this);
+    }
+
+    public void removeAddress(UserAddress address) {
+        addresses.remove(address);
+        address.setUser(null);
+    }
+
+    public UserAddress getDefaultAddress() {
+        return addresses.stream()
+                .filter(UserAddress::getIsDefault)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void setDefaultAddress(UserAddress newDefault) {
+        // Unset current default
+        addresses.stream()
+                .filter(UserAddress::getIsDefault)
+                .forEach(UserAddress::unsetDefault);
+        // Set new default
+        newDefault.setAsDefault();
+    }
+
+    // *** Referral Helper Methods ***
+    public void addReferral(UserReferral referral) {
+        referralsSent.add(referral);
+        referral.setReferrer(this);
+    }
+
+    public Integer getTotalSuccessfulReferrals() {
+        return (int) referralsSent.stream()
+                .filter(r -> r.getStatus() == com.hoangthanhhong.badminton.enums.ReferralStatus.COMPLETED)
+                .count();
+    }
+
     public Integer getTotalLoyaltyPoints() {
         return loyaltyPoints.stream()
                 .mapToInt(LoyaltyPoint::getPoints)
                 .sum();
+    }
+
+    public LoyaltyTier getLoyaltyTier() {
+        return loyaltyTier;
+    }
+
+    public void setLoyaltyTier(LoyaltyTier loyaltyTier) {
+        this.loyaltyTier = loyaltyTier;
     }
 }

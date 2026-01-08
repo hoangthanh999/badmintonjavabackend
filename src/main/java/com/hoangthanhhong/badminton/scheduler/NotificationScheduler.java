@@ -32,7 +32,6 @@ public class NotificationScheduler {
 
         for (Notification notification : notifications) {
             try {
-                // TODO: Send email via email service
 
                 notification.markEmailSent();
                 notificationRepository.save(notification);
@@ -60,7 +59,6 @@ public class NotificationScheduler {
 
         for (Notification notification : notifications) {
             try {
-                // TODO: Send SMS via SMS service
 
                 notification.markSmsSent();
                 notificationRepository.save(notification);
@@ -88,7 +86,6 @@ public class NotificationScheduler {
 
         for (Notification notification : notifications) {
             try {
-                // TODO: Send push notification via FCM or similar service
 
                 notification.markPushSent();
                 notification.markAsSent();

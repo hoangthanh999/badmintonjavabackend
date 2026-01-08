@@ -31,6 +31,28 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findByStatus(ReviewStatus status, Pageable pageable);
 
+    @Query("""
+                SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END
+                FROM Review r
+                WHERE r.user.id = :userId
+                AND r.court.id = :courtId
+                AND r.deletedAt IS NULL
+            """)
+    boolean existsActiveCourtReview(
+            @Param("userId") Long userId,
+            @Param("courtId") Long courtId);
+
+    @Query("""
+                SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END
+                FROM Review r
+                WHERE r.user.id = :userId
+                AND r.product.id = :productId
+                AND r.deletedAt IS NULL
+            """)
+    boolean existsActiveProductReview(
+            @Param("userId") Long userId,
+            @Param("productId") Long productId);
+
     // === COMPLEX QUERIES ===
 
     // 1. Tìm review theo court với status
@@ -246,4 +268,39 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> searchReviews(
             @Param("searchTerm") String searchTerm,
             Pageable pageable);
+
+    @Query("""
+                SELECT r FROM Review r
+                WHERE r.court.id = :courtId
+                AND r.status = :status
+                AND r.deletedAt IS NULL
+                ORDER BY r.createdAt DESC
+            """)
+    Page<Review> findByCourtIdAndStatusAndIsDeletedFalse(
+            @Param("courtId") Long courtId,
+            @Param("status") ReviewStatus status,
+            Pageable pageable);
+
+    @Query("""
+                SELECT r FROM Review r
+                WHERE r.product.id = :productId
+                AND r.status = :status
+                AND r.deletedAt IS NULL
+                ORDER BY r.createdAt DESC
+            """)
+    Page<Review> findByProductIdAndStatusAndIsDeletedFalse(
+            @Param("productId") Long productId,
+            @Param("status") ReviewStatus status,
+            Pageable pageable);
+
+    @Query("""
+                SELECT r FROM Review r
+                WHERE r.user.id = :userId
+                AND r.deletedAt IS NULL
+                ORDER BY r.createdAt DESC
+            """)
+    Page<Review> findByUserIdAndIsDeletedFalse(
+            @Param("userId") Long userId,
+            Pageable pageable);
+
 }

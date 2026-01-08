@@ -91,6 +91,13 @@ public class Product extends BaseEntity {
     private List<Review> reviews = new ArrayList<>();
 
     // === HELPER METHODS ===
+    public String getImageUrl() {
+        return this.image;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.image = imageUrl;
+    }
 
     public Double getCurrentPrice() {
         return salePrice != null && salePrice > 0 ? salePrice : price;

@@ -1,6 +1,6 @@
-package com.badminton.entity;
+package com.hoangthanhhong.badminton.entity;
 
-import com.badminton.entity.base.BaseEntity;
+import com.hoangthanhhong.badminton.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

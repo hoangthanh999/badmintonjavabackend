@@ -41,4 +41,19 @@ public interface LoyaltyTierRepository extends JpaRepository<LoyaltyTier, Long> 
                 WHERE u.loyaltyTier.id = :tierId
             """)
     Long countUsersByTierId(@Param("tierId") Long tierId);
+
+    @Query("""
+                SELECT lt FROM LoyaltyTier lt
+                ORDER BY lt.level ASC
+            """)
+    List<LoyaltyTier> findAllByOrderByLevelAsc();
+
+    @Query("""
+                SELECT lt FROM LoyaltyTier lt
+                WHERE :points >= lt.minPoints
+                AND (:points < lt.maxPoints OR lt.maxPoints IS NULL)
+                ORDER BY lt.level DESC
+            """)
+    Optional<LoyaltyTier> findTierForPoints(@Param("points") Integer points);
+
 }

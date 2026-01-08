@@ -32,6 +32,8 @@ public enum NotificationType {
     // Loyalty
     POINTS_EARNED("Points Earned", "Nhận điểm thưởng"),
     POINTS_EXPIRING("Points Expiring", "Điểm sắp hết hạn"),
+    POINTS_REDEEMED("Points Redeemed", "Đổi điểm thưởng"),
+    POINTS_EXPIRED("Points Expired", "Điểm đã hết hạn"),
     TIER_UPGRADED("Tier Upgraded", "Nâng hạng thành viên"),
 
     // System
@@ -44,7 +46,10 @@ public enum NotificationType {
     MENTION("Mention", "Được nhắc đến"),
 
     // Review
+    REVIEW_APPROVED("Review Approved", "Đánh giá được duyệt"),
+    REVIEW_REJECTED("Review Rejected", "Đánh giá bị từ chối"),
     REVIEW_REPLY("Review Reply", "Phản hồi đánh giá"),
+    REVIEW_RESPONDED("Review Responded", "Đánh giá đã được phản hồi"),
     REVIEW_HELPFUL("Review Helpful", "Đánh giá hữu ích");
 
     private final String name;

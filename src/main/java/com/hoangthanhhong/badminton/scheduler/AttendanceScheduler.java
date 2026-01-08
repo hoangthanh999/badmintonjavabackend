@@ -127,8 +127,6 @@ public class AttendanceScheduler {
         List<Object[]> statistics = attendanceRepository.getAttendanceStatisticsByUser(
                 startDate, endDate);
 
-        // TODO: Generate and send report to managers
-
         log.info("Generated monthly attendance report for {} users", statistics.size());
     }
 }

@@ -1,4 +1,5 @@
-package com.hoangthanhhong.badminton.dto;
+// File: MaintenanceStatisticsDTO.java (CẬP NHẬT)
+package com.hoangthanhhong.badminton.dto.maintenance;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,34 +8,38 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class MaintenanceStatisticsDTO {
-
     private Long courtId;
+    private String courtName;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private Integer totalMaintenance;
-    private Integer completedMaintenance;
-    private Integer inProgressMaintenance;
-    private Integer scheduledMaintenance;
-    private Integer overdueMaintenance;
+    // Counts - ✅ ĐỔI TẤT CẢ từ Integer sang Long
+    private Long totalMaintenance;
+    private Long completedMaintenance;
+    private Long inProgressMaintenance;
+    private Long scheduledMaintenance;
+    private Long cancelledMaintenance;
+    private Long overdueMaintenance;
 
+    // Costs
     private Double totalCost;
     private Double averageCost;
-    private Double totalEstimatedCost;
-    private Double totalActualCost;
-    private Double costVariance;
+    private Double minCost;
+    private Double maxCost;
 
+    // Duration
+    private Double averageDuration;
     private Integer totalDuration;
-    private Integer averageDuration;
 
+    // By type
     private List<Object[]> typeStatistics;
+
+    // By status
     private List<Object[]> statusCounts;
-    private Map<String, Integer> maintenanceByMonth;
 }

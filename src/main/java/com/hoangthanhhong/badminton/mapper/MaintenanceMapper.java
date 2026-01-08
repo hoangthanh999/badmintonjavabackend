@@ -1,11 +1,15 @@
+
 package com.hoangthanhhong.badminton.mapper;
 
 import com.hoangthanhhong.badminton.dto.maintenance.MaintenanceChecklistItemDTO;
 import com.hoangthanhhong.badminton.dto.maintenance.MaintenanceDTO;
+import com.hoangthanhhong.badminton.dto.maintenance.MaintenanceStatisticsDTO;
 import com.hoangthanhhong.badminton.entity.Maintenance;
 import com.hoangthanhhong.badminton.entity.MaintenanceChecklistItem;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -14,6 +18,24 @@ public class MaintenanceMapper {
     public MaintenanceDTO toDTO(Maintenance maintenance) {
         if (maintenance == null)
             return null;
+
+        // Calculate actual duration
+        Integer actualDuration = null;
+        if (maintenance.getActualStartTime() != null && maintenance.getActualEndTime() != null) {
+            actualDuration = (int) Duration.between(
+                    maintenance.getActualStartTime(),
+                    maintenance.getActualEndTime()).toMinutes();
+        }
+
+        // Calculate completion percentage
+        Integer completionPercentage = maintenance.getCompletionPercentage();
+        if (completionPercentage == null && maintenance.getChecklistItems() != null) {
+            long total = maintenance.getChecklistItems().size();
+            long completed = maintenance.getChecklistItems().stream()
+                    .filter(MaintenanceChecklistItem::getIsCompleted)
+                    .count();
+            completionPercentage = total > 0 ? (int) (completed * 100 / total) : 0;
+        }
 
         return MaintenanceDTO.builder()
                 .id(maintenance.getId())
@@ -29,7 +51,7 @@ public class MaintenanceMapper {
                 .actualStartTime(maintenance.getActualStartTime())
                 .actualEndTime(maintenance.getActualEndTime())
                 .estimatedDuration(maintenance.getEstimatedDuration())
-                .actualDuration(maintenance.getActualDuration())
+                .actualDuration(actualDuration)
                 .estimatedCost(maintenance.getEstimatedCost())
                 .actualCost(maintenance.getActualCost())
                 .currency(maintenance.getCurrency())
@@ -59,7 +81,7 @@ public class MaintenanceMapper {
                 .cancelledBy(maintenance.getCancelledBy())
                 .cancelledAt(maintenance.getCancelledAt())
                 .cancellationReason(maintenance.getCancellationReason())
-                .completionPercentage(maintenance.getCompletionPercentage())
+                .completionPercentage(completionPercentage)
                 .createdAt(maintenance.getCreatedAt())
                 .updatedAt(maintenance.getUpdatedAt())
                 .build();
@@ -69,10 +91,10 @@ public class MaintenanceMapper {
         MaintenanceDTO dto = toDTO(maintenance);
 
         if (maintenance.getChecklistItems() != null && !maintenance.getChecklistItems().isEmpty()) {
-            dto.setChecklistItems(
-                    maintenance.getChecklistItems().stream()
-                            .map(this::toChecklistItemDTO)
-                            .collect(Collectors.toList()));
+            List<MaintenanceChecklistItemDTO> items = maintenance.getChecklistItems().stream()
+                    .map(this::toChecklistItemDTO)
+                    .collect(Collectors.toList());
+            dto.setChecklistItems(items);
         }
 
         return dto;
@@ -93,6 +115,28 @@ public class MaintenanceMapper {
                 .notes(item.getNotes())
                 .sortOrder(item.getSortOrder())
                 .isMandatory(item.getIsMandatory())
+                .build();
+    }
+
+    public MaintenanceStatisticsDTO toStatisticsDTO(
+            Long totalMaintenance,
+            Long completed,
+            Long inProgress,
+            Long scheduled,
+            Long cancelled,
+            Double totalCost,
+            Double averageCost,
+            Double averageDuration) {
+
+        return MaintenanceStatisticsDTO.builder()
+                .totalMaintenance(totalMaintenance)
+                .completedMaintenance(completed)
+                .inProgressMaintenance(inProgress)
+                .scheduledMaintenance(scheduled)
+                .cancelledMaintenance(cancelled)
+                .totalCost(totalCost)
+                .averageCost(averageCost)
+                .averageDuration(averageDuration)
                 .build();
     }
 }

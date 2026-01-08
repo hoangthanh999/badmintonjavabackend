@@ -69,7 +69,8 @@ public class UserLoyaltyStats extends BaseEntity {
 
     @Column(name = "last_spent_at")
     private java.time.LocalDateTime lastSpentAt;
-
+    @Column(name = "current_tier", length = 100)
+    private String currentTier;
     // === HELPER METHODS ===
 
     public void earnPoints(Integer points) {
@@ -112,5 +113,13 @@ public class UserLoyaltyStats extends BaseEntity {
         if (totalReferrals == 0)
             return 0.0;
         return (double) successfulReferrals / totalReferrals * 100;
+    }
+
+    public String getCurrentTier() {
+        return currentTier;
+    }
+
+    public void setCurrentTier(String currentTier) {
+        this.currentTier = currentTier;
     }
 }

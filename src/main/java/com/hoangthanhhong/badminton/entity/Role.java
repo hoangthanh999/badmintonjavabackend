@@ -1,7 +1,7 @@
-package com.badminton.entity;
+package com.hoangthanhhong.badminton.entity;
 
-import com.badminton.entity.base.BaseEntity;
-import com.badminton.enums.RoleType;
+import com.hoangthanhhong.badminton.entity.base.BaseEntity;
+import com.hoangthanhhong.badminton.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 

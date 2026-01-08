@@ -271,4 +271,10 @@ public class Review extends BaseEntity {
     public boolean isPending() {
         return status == ReviewStatus.PENDING;
     }
+
+    public void respond(String response, Long respondedBy) {
+        this.adminResponse = response;
+        this.respondedAt = LocalDateTime.now();
+        this.respondedBy = respondedBy;
+    }
 }

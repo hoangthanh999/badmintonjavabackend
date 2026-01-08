@@ -38,7 +38,8 @@ public class OrderDetail extends BaseEntity {
 
     @Column(nullable = false)
     private Double price;
-
+    @Column(name = "unit_price", nullable = false)
+    private Double unitPrice;
     @Column(name = "discount_amount")
     @Builder.Default
     private Double discountAmount = 0.0;
@@ -66,7 +67,8 @@ public class OrderDetail extends BaseEntity {
     @PrePersist
     @PreUpdate
     public void calculateSubtotal() {
-        this.subtotal = (this.price * this.quantity) - (this.discountAmount != null ? this.discountAmount : 0.0);
+        Double priceToUse = unitPrice != null ? unitPrice : price;
+        this.subtotal = (priceToUse * this.quantity) - (this.discountAmount != null ? this.discountAmount : 0.0);
     }
 
     public void updateFromProduct(Product product) {
@@ -82,5 +84,13 @@ public class OrderDetail extends BaseEntity {
 
     public Double getFinalPrice() {
         return subtotal;
+    }
+
+    public Double getUnitPrice() {
+        return unitPrice != null ? unitPrice : price;
+    }
+
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }
